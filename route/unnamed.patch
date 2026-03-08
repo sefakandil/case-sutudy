@@ -1,0 +1,36 @@
+Index: src/main/java/com/example/demo/route/RouteServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demo/route/RouteServiceImpl.java b/src/main/java/com/example/demo/route/RouteServiceImpl.java
+--- a/src/main/java/com/example/demo/route/RouteServiceImpl.java	
++++ b/src/main/java/com/example/demo/route/RouteServiceImpl.java	(date 1772888757583)
+@@ -41,7 +41,7 @@
+ 
+         final Location destination = locationService.findByLocationCode(request.getDestinationLocationCode())
+                 .orElseThrow(() -> new RuntimeException("Destination location not found: " + request.getDestinationLocationCode()));
+-
++        ;
+         final List<Transportation> originList = transportationService.findByOriginId(origin.getId(), selectedDay);
+         final List<Transportation> destinationList = transportationService.findByDestinationId(destination.getId(), selectedDay);
+         final List<Transportation> transferListByOriginsDestinations = transportationService.findFlightTransferListByOriginsDestinations(origin.getId(), selectedDay);
+Index: target/generated-sources/annotations/com/example/demo/location/LocationMapperImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/generated-sources/annotations/com/example/demo/location/LocationMapperImpl.java b/target/generated-sources/annotations/com/example/demo/location/LocationMapperImpl.java
+--- a/target/generated-sources/annotations/com/example/demo/location/LocationMapperImpl.java	
++++ b/target/generated-sources/annotations/com/example/demo/location/LocationMapperImpl.java	(date 1772888757576)
+@@ -7,8 +7,8 @@
+ 
+ @Generated(
+     value = "org.mapstruct.ap.MappingProcessor",
+-    date = "2026-03-07T16:05:08+0300",
+-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.18 (Microsoft)"
++    date = "2026-03-07T15:56:52+0300",
++    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22 (Oracle Corporation)"
+ )
+ @Component
+ public class LocationMapperImpl implements LocationMapper {

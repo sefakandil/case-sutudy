@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+
+spring:
+  application:
+    name: route
+  datasource:
+    url: jdbc:postgresql://localhost:5432/route_planner
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        shutdown-timeout: 100ms
+      shutdown-timeout: 200ms
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600
+      cache-null-values: false
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /v3/api-docs
+
+jwt:
+  secret: CHANGE_ME_TO_A_LONG_RANDOM_SECRET_AT_LEAST_32_CHARS
+  expiration: 3600000
+
+app:
+  cache:
+    ttl: 2m
+    cacheNullValues : false
