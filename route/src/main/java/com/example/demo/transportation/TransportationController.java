@@ -5,6 +5,7 @@ import com.example.demo.transportation.dto.TransportationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class TransportationController {
 
     @GetMapping
     public Page<TransportationResponse> getAll(
-            @PageableDefault Pageable pageable) {
+            @PageableDefault(sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         return transportationService.getAll(pageable);
     }
 }

@@ -13,14 +13,14 @@ public interface TransportationRepository extends JpaRepository<Transportation, 
 
     @Query(value = "SELECT * FROM transportations t " +
             "WHERE (t.operating_days_mask & :dayBit) <> 0" +
-            " and t.origin_location_id = :originId ;"
+            " and t.origin_location_id = :originId "
             , nativeQuery = true)
     List<Transportation> findByOriginId(Long originId, int dayBit);
 
 
     @Query(value = "SELECT * FROM transportations t " +
             "WHERE (t.operating_days_mask & :dayBit) <> 0" +
-            " and t.destination_location_id  =:destinationId ;"
+            " and t.destination_location_id  =:destinationId "
             , nativeQuery = true)
     List<Transportation> findByDestinationId(Long destinationId, int dayBit);
 
@@ -31,7 +31,7 @@ public interface TransportationRepository extends JpaRepository<Transportation, 
             " and t.origin_location_id in  ( " +
             "                       Select d.destination_location_id from transportations d " +
             "                       where d.origin_location_id = :originId  " +
-            "                           ) ;"
+            "                           ) "
             , nativeQuery = true)
     List<Transportation> findTransferListByOriginIdAndTransferType(Long originId, int dayBit, String type);
 
