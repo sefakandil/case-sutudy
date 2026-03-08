@@ -1,12 +1,11 @@
 package com.example.demo.route;
 
 import com.example.demo.common.exception.ApiException;
-import com.example.demo.location.Location;
-import com.example.demo.location.LocationMapper;
 import com.example.demo.location.LocationService;
 import com.example.demo.location.dto.LocationResponse;
+import com.example.demo.route.dto.RouteResponse;
+import com.example.demo.route.dto.RouteSearchRequest;
 import com.example.demo.route.dto.RouteSegmentResponse;
-import com.example.demo.transportation.Transportation;
 import com.example.demo.transportation.TransportationService;
 import com.example.demo.transportation.TransportationType;
 import com.example.demo.transportation.dto.TransportationResponse;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.example.demo.route.dto.RouteResponse;
-import com.example.demo.route.dto.RouteSearchRequest;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -40,14 +37,14 @@ public class RouteServiceImpl implements RouteService {
 
         final LocationResponse origin = locationService.findByLocationCode(request.getOriginLocationCode())
                 .orElseThrow(() -> new ApiException(
-                        HttpStatus.CONFLICT,
+                        HttpStatus.NOT_FOUND,
                         "error.location.origin.notfound",
                         request.getOriginLocationCode()
                 ));
 
         final LocationResponse destination = locationService.findByLocationCode(request.getDestinationLocationCode())
                 .orElseThrow(() -> new ApiException(
-                        HttpStatus.CONFLICT,
+                        HttpStatus.NOT_FOUND,
                         "error.location.destination.notfound",
                         request.getDestinationLocationCode()
                 ));
@@ -197,11 +194,12 @@ public class RouteServiceImpl implements RouteService {
 
         final List<TransportationResponse> lastRoute = new ArrayList<>();
 
-        commonKeys.stream().forEach(locationCode ->
+        commonKeys.stream().forEach(locationCode -> {
             lastRoute.addAll(destinationsOriginMap.get(locationCode).stream()
                     .filter(data -> !TransportationType.FLIGHT.equals(data.getTransportationType()))
                     .toList());
-        );
+
+        });
 
         if (CollectionUtils.isEmpty(lastRoute)) {
             return;

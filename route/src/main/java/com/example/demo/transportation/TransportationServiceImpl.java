@@ -41,14 +41,14 @@ public class TransportationServiceImpl implements TransportationService {
 
          final LocationResponse origin = locationService.findByLocationCode(request.getOrigin().getLocationCode())
                 .orElseThrow(() ->new ApiException(
-                        HttpStatus.CONFLICT,
+                        HttpStatus.NOT_FOUND,
                         "error.location.origin.notfound",
                         request.getOrigin().getLocationCode()
                 ));
 
         final LocationResponse destination = locationService.findByLocationCode(request.getDestination().getLocationCode())
                 .orElseThrow(() -> new ApiException(
-                        HttpStatus.CONFLICT,
+                        HttpStatus.NOT_FOUND,
                         "error.location.destination.notfound",
                         request.getDestination().getLocationCode()
                 ));
@@ -117,7 +117,7 @@ public class TransportationServiceImpl implements TransportationService {
     @Override
     @Cacheable(
             value = "transportation:page",
-            key = "#pageable.pageNumber + '-' + #pageable.pageSize"
+            key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()"
     )
     public Page<TransportationResponse> getAll(Pageable pageable) {
         return transportationRepository.findAll(pageable)

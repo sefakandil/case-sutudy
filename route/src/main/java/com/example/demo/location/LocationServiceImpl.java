@@ -34,16 +34,7 @@ public class LocationServiceImpl implements LocationService {
 
         final Location location = locationRepository.save(locationMapper.convertToLocation(request));
 
-        if (Objects.nonNull(location)) {
-            return locationMapper.convertToLocationResponse(location);
-        }
-
-        throw new ApiException(
-                HttpStatus.CONFLICT,
-                "error.location.create",
-                request.getLocationCode()
-        );
-
+        return locationMapper.convertToLocationResponse(location);
     }
 
     @Override
@@ -66,14 +57,14 @@ public class LocationServiceImpl implements LocationService {
         }
 
         throw new ApiException(
-                HttpStatus.CONFLICT,
+                HttpStatus.NOT_FOUND,
                 "error.location.notfound",
                 id
         );
     }
 
     @Override
-   @Cacheable(value = "location:by-code", key = "#locationCode")
+    @Cacheable(value = "location:by-code", key = "#locationCode")
     public Optional<LocationResponse> findByLocationCode(String locationCode) {
 
         Optional<Location> location = locationRepository.findByLocationCode(locationCode);
