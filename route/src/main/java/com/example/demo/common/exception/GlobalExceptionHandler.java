@@ -30,7 +30,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleApiException(
             ApiException ex,
             HttpServletRequest request
-    ) {
+    ) {        log.error("Unhandled exception: ", ex);
+
         String message = messageResolver.getMessage(ex.getMessageKey(), ex.getMessageArgs());
         return buildResponse(ex.getStatus(), message, request.getRequestURI());
     }
@@ -39,7 +40,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
             HttpServletRequest request
-    ) {
+    ) {        log.error("Unhandled exception: ", ex);
+
         ApiErrorResponse response = new ApiErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -62,7 +64,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleConstraintViolation(
             ConstraintViolationException ex,
             HttpServletRequest request
-    ) {
+    ) {        log.error("Unhandled exception: ", ex);
+
         return buildResponse(
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage(),
@@ -74,7 +77,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleAccessDenied(
             AccessDeniedException ex,
             HttpServletRequest request
-    ) {
+    ) {        log.error("Unhandled exception: ", ex);
+
         return buildResponse(
                 HttpStatus.FORBIDDEN,
                 messageResolver.getMessage("error.access.denied"),

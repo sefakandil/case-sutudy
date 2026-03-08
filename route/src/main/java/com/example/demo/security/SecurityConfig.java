@@ -41,10 +41,10 @@ public class SecurityConfig {
                         "/swagger"
                 ).permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers(EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
                 .requestMatchers("/api/v1/routes/**").hasAnyRole("ADMIN", "AGENCY")
                 .requestMatchers("/api/v1/transportations/**").hasRole("ADMIN")
-                .requestMatchers(EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
-                //.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
 
