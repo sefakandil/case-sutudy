@@ -28,3 +28,8 @@ TestResults.xml
 *.ipr
 
 .mvn/
+
+### Environment variables ###
+.env
+.env.*
+!.env.example
