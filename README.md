@@ -23,6 +23,30 @@ Bu repo, iki ana bilesenden olusan bir ucus rota planlama calismasidir:
 - Node.js 20+ ve npm
 - Docker (altyapiyi container ile calistirmak icin)
 
+## Ortam Degiskenleri (Environment Variables)
+
+Hassas konfigurasyon degerleri environment variable olarak yonetilmektedir.
+Calistirmadan once `.env.example` dosyasini `.env` olarak kopyalayin ve degerleri doldurun:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+| Degisken | Aciklama | Varsayilan (local) |
+|---|---|---|
+| `POSTGRES_DB` | Veritabani adi | `route_planner` |
+| `POSTGRES_USER` | DB kullanici adi | `postgres` |
+| `POSTGRES_PASSWORD` | DB sifresi | `postgres` |
+| `DB_URL` | JDBC baglanti URL | `jdbc:postgresql://localhost:5432/route_planner` |
+| `DB_USERNAME` | Spring datasource kullanici | `postgres` |
+| `DB_PASSWORD` | Spring datasource sifre | `postgres` |
+| `REDIS_HOST` | Redis host | `localhost` |
+| `REDIS_PORT` | Redis port | `6379` |
+| `JWT_SECRET` | JWT imzalama anahtari (min 32 karakter) | — |
+| `JWT_EXPIRATION` | JWT suresi (ms) | `3600000` |
+
+> ⚠️ **Onemli:** `JWT_SECRET` degerini guclu ve rastgele bir degerle degistirin. `.env` dosyasi asla versiyon kontrolune eklenmemelidir.
+
 ## Hizli Baslangic (Local)
 
 ### 1) Altyapi servislerini baslatin
