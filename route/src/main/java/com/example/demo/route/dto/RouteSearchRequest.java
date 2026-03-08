@@ -1,10 +1,13 @@
 package com.example.demo.route.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -25,6 +28,7 @@ public class RouteSearchRequest {
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{validation.destination.code.pattern}")
     private String destinationLocationCode;
 
+    @NotNull
     private LocalDate travelDate;
 }
 

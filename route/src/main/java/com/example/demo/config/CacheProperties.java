@@ -13,6 +13,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class CacheProperties {
 
     private Duration ttl = Duration.ofMinutes(10);
-    private boolean nullValues = false;
 
 }
