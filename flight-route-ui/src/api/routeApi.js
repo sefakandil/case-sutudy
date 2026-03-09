@@ -30,7 +30,7 @@ function mapRouteResponseItem(route, index) {
   };
 }
 export async function searchRoutes(params) {
-  const response = await api.post("api/v1/routes/search", {
+  const response = await api.post("/v1/routes/search", {
      
     originLocationCode: params.origin,
     destinationLocationCode: params.destination,

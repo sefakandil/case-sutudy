@@ -87,15 +87,21 @@ public class RouteServiceImpl implements RouteService {
             return;
 
         }
+        routes.add(getRouteResponse(List.of(route)));
 
+    }
+
+    private static RouteResponse getRouteResponse(List<TransportationResponse> routes) {
         final RouteResponse routeResponse = new RouteResponse();
-        final RouteSegmentResponse routeSegmentResponse = new RouteSegmentResponse();
-        routeSegmentResponse.setOrigin(route.getOrigin());
-        routeSegmentResponse.setDestination(route.getDestination());
-        routeSegmentResponse.setTransportationType(route.getTransportationType());
-        routeResponse.setSegments(List.of(routeSegmentResponse));
-        routes.add(routeResponse);
-
+        routeResponse.setSegments(new ArrayList<>());
+        routes.forEach(data -> {
+            final RouteSegmentResponse routeSegmentResponse = new RouteSegmentResponse();
+            routeSegmentResponse.setOrigin(data.getOrigin());
+            routeSegmentResponse.setDestination(data.getDestination());
+            routeSegmentResponse.setTransportationType(data.getTransportationType());
+            routeResponse.getSegments().add(routeSegmentResponse);
+        });
+        return routeResponse;
     }
 
     private void findAfterFlight(HashMap<String, List<TransportationResponse>> originsDestinationsMap, HashMap<String, List<TransportationResponse>> destinationsOriginMap, List<RouteResponse> routes) {
@@ -124,17 +130,8 @@ public class RouteServiceImpl implements RouteService {
             destinationsOriginMap.get(originRoute.getDestination().getLocationCode()).stream()
                     .filter(data -> !TransportationType.FLIGHT.equals(data.getTransportationType()))
                     .forEach(secondRoute -> {
-                        final RouteResponse routeResponse = new RouteResponse();
-                        final RouteSegmentResponse firstSegmentResponse = new RouteSegmentResponse();
-                        firstSegmentResponse.setOrigin(originRoute.getOrigin());
-                        firstSegmentResponse.setDestination(originRoute.getDestination());
-                        firstSegmentResponse.setTransportationType(originRoute.getTransportationType());
-                        final RouteSegmentResponse secondSegmentResponse = new RouteSegmentResponse();
-                        secondSegmentResponse.setOrigin(secondRoute.getOrigin());
-                        secondSegmentResponse.setDestination(secondRoute.getDestination());
-                        secondSegmentResponse.setTransportationType(secondRoute.getTransportationType());
-                        routeResponse.setSegments(List.of(firstSegmentResponse, secondSegmentResponse));
-                        routes.add(routeResponse);
+
+                        routes.add(getRouteResponse(List.of(originRoute, secondRoute)));
                     });
         });
 
@@ -167,17 +164,8 @@ public class RouteServiceImpl implements RouteService {
                     .filter(data -> TransportationType.FLIGHT.equals(data.getTransportationType()))
                     .forEach(secondRoute -> {
 
-                        final RouteResponse routeResponse = new RouteResponse();
-                        final RouteSegmentResponse firstSegmentResponse = new RouteSegmentResponse();
-                        firstSegmentResponse.setOrigin(originRoute.getOrigin());
-                        firstSegmentResponse.setDestination(originRoute.getDestination());
-                        firstSegmentResponse.setTransportationType(originRoute.getTransportationType());
-                        final RouteSegmentResponse secondSegmentResponse = new RouteSegmentResponse();
-                        secondSegmentResponse.setOrigin(secondRoute.getOrigin());
-                        secondSegmentResponse.setDestination(secondRoute.getDestination());
-                        secondSegmentResponse.setTransportationType(secondRoute.getTransportationType());
-                        routeResponse.setSegments(List.of(firstSegmentResponse, secondSegmentResponse));
-                        routes.add(routeResponse);
+                        routes.add(getRouteResponse(List.of(originRoute, secondRoute)));
+
                     });
         });
     }
@@ -209,33 +197,18 @@ public class RouteServiceImpl implements RouteService {
 
             final TransportationResponse secondRoute = transferMap.get(last.getOrigin().getLocationCode());
 
-            final  List<TransportationResponse> firstRouteList = originsDestinationsMap.get(secondRoute.getOrigin().getLocationCode());
+            final List<TransportationResponse> firstRouteList = originsDestinationsMap.get(secondRoute.getOrigin().getLocationCode());
 
-            if(!CollectionUtils.isEmpty(firstRouteList)){
+            if (!CollectionUtils.isEmpty(firstRouteList)) {
 
-            firstRouteList.stream()
-                    .filter(data -> !TransportationType.FLIGHT.equals(data.getTransportationType()))
-                    .forEach(first -> {
+                firstRouteList.stream()
+                        .filter(data -> !TransportationType.FLIGHT.equals(data.getTransportationType()))
+                        .forEach(first -> {
+                            routes.add(getRouteResponse(List.of(first, secondRoute, last)));
 
-                        final RouteResponse routeResponse = new RouteResponse();
-                        final RouteSegmentResponse firstSegmentResponse = new RouteSegmentResponse();
-                        firstSegmentResponse.setOrigin(first.getOrigin());
-                        firstSegmentResponse.setDestination(first.getDestination());
-                        firstSegmentResponse.setTransportationType(first.getTransportationType());
-                        final RouteSegmentResponse secondSegmentResponse = new RouteSegmentResponse();
-                        secondSegmentResponse.setOrigin(secondRoute.getOrigin());
-                        secondSegmentResponse.setDestination(secondRoute.getDestination());
-                        secondSegmentResponse.setTransportationType(secondRoute.getTransportationType());
-                        final RouteSegmentResponse thirdSegmentResponse = new RouteSegmentResponse();
-                        thirdSegmentResponse.setOrigin(last.getOrigin());
-                        thirdSegmentResponse.setDestination(last.getDestination());
-                        thirdSegmentResponse.setTransportationType(last.getTransportationType());
-                        routeResponse.setSegments(List.of(firstSegmentResponse, secondSegmentResponse, thirdSegmentResponse));
-                        routes.add(routeResponse);
-                    });
+                        });
             }
         });
-
 
     }
 }

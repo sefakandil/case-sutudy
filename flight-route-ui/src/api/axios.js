@@ -3,7 +3,8 @@ import { mapApiError } from "./errorMapper";
 import { showErrorToast, showValidationToast } from "../util/toastUtils";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/",
+  // baseURL: "http://localhost:8080/",
+    baseURL: "/api"
 });
 
 api.interceptors.request.use((config) => {
